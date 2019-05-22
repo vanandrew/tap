@@ -7,9 +7,9 @@ from django.http import HttpResponse
 def home(request):
     # set root abcd directory
     # TODO: do not hard code this in the future
-    abcd_root = '/mnt/Daenerys/ABCD/data'
+    #abcd_root = '/mnt/Daenerys/ABCD/data'
 
     # get bids layout
-    layout = BIDSLayout(os.path.join(abcd_root,'abcdbids_input'))
+    #layout = BIDSLayout(os.path.join(abcd_root,'abcdbids_input'))
 
-    return HttpResponse('Test')
+    return render(request, 'reservoir/home.html')
