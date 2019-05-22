@@ -1,2 +1,2 @@
 django==2.2.1
-pybids==0.8.0
+git+git://github.com/bids-standard/pybids.git@0.9.0#egg=pybids
