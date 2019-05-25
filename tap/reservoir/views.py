@@ -13,3 +13,6 @@ def home(request):
     #layout = BIDSLayout(os.path.join(abcd_root,'abcdbids_input'))
 
     return render(request, 'reservoir/home.html')
+
+def test(request):
+    return render(request, 'sub-NDARINV0A4P0LWM/ses-baselineYear1Arm1/files/executivesummary/executive_summary_sub-NDARINV0A4P0LWM.html')
