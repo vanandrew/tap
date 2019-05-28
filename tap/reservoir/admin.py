@@ -7,20 +7,12 @@ class SubjectAdmin(admin.ModelAdmin):
 class SessionAdmin(admin.ModelAdmin):
     pass
 
-class AnatAdmin(admin.ModelAdmin):
-    pass
-
-class FmapAdmin(admin.ModelAdmin):
-    pass
-
-class FuncAdmin(admin.ModelAdmin):
+class BIDSFileAdmin(admin.ModelAdmin):
     pass
 
 admin.site.register(Subject,SubjectAdmin)
 admin.site.register(Session,SessionAdmin)
-admin.site.register(Anat,AnatAdmin)
-admin.site.register(Fmap,FmapAdmin)
-admin.site.register(Func,FuncAdmin)
+admin.site.register(BIDSFile,BIDSFileAdmin)
 
 admin.site.site_title = 'tap Admin'
 admin.site.site_header = 'tap Admin'
