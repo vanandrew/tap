@@ -29,78 +29,9 @@
             <thead>
               <tr>
                 <th>Subject</th>
-                <th>Data</th>
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <td>A</td>
-                <td><a href='{% url 'test' %}'>B</a></td>
-              </tr>
-              <tr>
-                <td>A</td>
-                <td>B</td>
-              </tr>
-              <tr>
-                <td>A</td>
-                <td>B</td>
-              </tr>
-              <tr>
-                <td>A</td>
-                <td>B</td>
-              </tr>
-              <tr>
-                <td>A</td>
-                <td>B</td>
-              </tr>
-              <tr>
-                <td>A</td>
-                <td>B</td>
-              </tr>
-              <tr>
-                <td>A</td>
-                <td>B</td>
-              </tr>
-              <tr>
-                <td>A</td>
-                <td>B</td>
-              </tr>
-              <tr>
-                <td>A</td>
-                <td>B</td>
-              </tr>
-              <tr>
-                <td>A</td>
-                <td>B</td>
-              </tr>
-              <tr>
-                <td>A</td>
-                <td>B</td>
-              </tr>
-              <tr>
-                <td>A</td>
-                <td>B</td>
-              </tr>
-              <tr>
-                <td>A</td>
-                <td>B</td>
-              </tr>
-              <tr>
-                <td>A</td>
-                <td>B</td>
-              </tr>
-              <tr>
-                <td>A</td>
-                <td>B</td>
-              </tr>
-              <tr>
-                <td>A</td>
-                <td>B</td>
-              </tr>
-              <tr>
-                <td>A</td>
-                <td>B</td>
-              </tr>
             </tbody>
           </table>
         </div>
@@ -113,7 +44,11 @@
     <script src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js" charset="utf-8"></script>
     <script type="text/javascript">
       $(document).ready(function() {
-        $('#table').DataTable();
+        $('#table').DataTable({
+          'processing': true,
+          'serverSide': true,
+          'ajax': '{% url 'api' %}'
+        });
       });
     </script>
   </body>

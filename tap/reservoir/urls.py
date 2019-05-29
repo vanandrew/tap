@@ -20,7 +20,8 @@ from django.views.static import serve
 
 urlpatterns = [
     path('', views.home, name='home'),
-    path('test', views.test, name='test'),    
+    path('api', views.api, name='api'),
+    path('test', views.test, name='test'),
 ]
 if settings.DEBUG:
     urlpatterns += [ re_path(r'^abcd/(?P<path>.*)$', serve, {
