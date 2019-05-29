@@ -1,0 +1,6 @@
+{
+    "ParallelReductionFactorInPlane": 2,
+    "CoilString": "RM:Nova32ch",
+    "PhaseEncodingPolarityGE": "Flipped",
+    "TriggerDelayTime": 14677
+}

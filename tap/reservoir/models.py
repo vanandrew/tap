@@ -19,7 +19,7 @@ class Subject(BaseBIDSDataClass):
         max_length = 255,
         primary_key=True
     )
- 
+
     class Meta:
         verbose_name = "Subject"
 
@@ -30,11 +30,13 @@ class Session(BaseBIDSDataClass):
     session = models.CharField(
         "Session",
         max_length=255,
+        primary_key=True
     )
- 
+
     subject = models.ForeignKey(
         "Subject",
-        on_delete=models.CASCADE
+        on_delete=models.CASCADE,
+        related_name='sessions'
     )
 
     class Meta:
@@ -46,7 +48,7 @@ class Session(BaseBIDSDataClass):
 def createmetafield(metafields,key):
     # detect field type
     metatype = type(metafields[key])
- 
+
     # create int field
     if metatype == int:
         return models.IntegerField(
@@ -80,23 +82,18 @@ class BIDSFile(models.Model):
         primary_key=True
     )
 
-    sidecar = models.CharField(
-        "JSON Sidecar", 
-        max_length=255,
-        blank=True,
-        null=True
-    )
-
     subject = models.ForeignKey(
         Subject,
         on_delete=models.CASCADE,
+        related_name='bidsfiles'
     )
 
     session = models.ForeignKey(
         Session,
         on_delete=models.CASCADE,
         blank=True,
-        null=True
+        null=True,
+        related_name='bidsfiles'
     )
 
     path = models.TextField(
@@ -118,24 +115,19 @@ class BIDSFile(models.Model):
                 null=True
             )
 
-    # load template file
-    with open(os.path.join(settings.BASE_DIR,'reservoir/BIDSMetaTemplates/anat.json'),'r') as metafile:
-        metafields = json.load(metafile)
-
-    with open(os.path.join(settings.BASE_DIR,'reservoir/BIDSMetaTemplates/fmap.json'),'r') as metafile:
-        metafields.update(json.load(metafile))
-
-    with open(os.path.join(settings.BASE_DIR,'reservoir/BIDSMetaTemplates/func.json'),'r') as metafile:
-        metafields.update(json.load(metafile))
+    # load template files
+    metafields = dict()
+    for f in os.listdir('reservoir/BIDSMetaTemplates/'):
+        with open(os.path.join(settings.BASE_DIR,'reservoir/BIDSMetaTemplates/',f),'r') as metafile:
+            metafields.update(json.load(metafile))
 
     # create fields
     for key in metafields:
         if key.lower() not in [field.lower() for field in vars()]:
-            vars()[key.lower()] = createmetafield(metafields,key) 
- 
+            vars()[key.lower()] = createmetafield(metafields,key)
+
     class Meta:
         verbose_name = "BIDS File"
- 
+
     def __str__(self):
         return self.filename
-
