@@ -25,10 +25,21 @@
     <div class="container-fluid">
       <div class="row">
         <div class="offset-1 col-10 my-4">
-          <table id="table" class="table table-striped table-bordered">
+          <div class="alert alert-info alert-dismissible fade show" role="alert">
+            Test
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="offset-1 col-10 my-4">
+          <table id="table" class="table table-striped table-bordered" style="width:100%">
             <thead>
               <tr>
-                <th>Subject</th>
+                <th>Filename</th>
+                <th>Path</th>
               </tr>
             </thead>
             <tbody>
@@ -47,9 +58,28 @@
         $('#table').DataTable({
           'processing': true,
           'serverSide': true,
-          'ajax': '{% url 'api' %}'
+          'ajax': '{% url 'api' %}',
+          'columnDefs': [
+            {
+              'render': function(data,type,row) {
+                return "<button type=button class='btn btn-primary' onclick=copyPath('" + data + "')>Copy Path</button>";
+              },
+              'targets': 1
+            }
+          ]
         });
       });
+      function copyPath(path) {
+        const el = document.createElement('textarea');
+        el.value = path;
+        el.setAttribute('readonly', '');
+        el.style.position = 'absolute';
+        el.style.left = '-9999px';
+        document.body.appendChild(el);
+        el.select();
+        document.execCommand('copy');
+        document.body.removeChild(el);
+      }
     </script>
   </body>
 </html>

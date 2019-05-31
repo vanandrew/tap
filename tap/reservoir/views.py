@@ -9,21 +9,22 @@ def home(request):
     return render(request, 'reservoir/home.html')
 
 def api(request):
-    # Get subjects
+    # Get filenames
     start = int(request.GET['start'])
     end = start + int(request.GET['length'])
-    subs = Subject.objects.all()[start:end]
+    filenames = BIDSFile.objects.all()
 
-    # get subject names
-    name = [sub.subject for sub in subs]
+    # filter list
+    filtered_list = [[f.filename, f.path] for f in filenames[start:end]]
 
     # create response and return
     response = {
         "draw": int(request.GET['draw']),
-        "recordsTotal": len(subs),
-        "recordsFiltered": len(subs),
-        "data": [[n,]for n in name]
+        "recordsTotal": len(filenames),
+        "recordsFiltered": len(filenames),
+        "data": filtered_list
     }
+
     return JsonResponse(response)
 
 # Executive Summary
