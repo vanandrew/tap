@@ -1,85 +1,75 @@
-{% load static %}
-<html>
-  <head>
-    <meta charset="utf-8">
+{% extends 'reservoir/base.html' %}
 
-    <title>tap</title>
-    <meta name="description" content="A local interface for ABCD data">
-    <meta name="author" content="Andrew Van">
+{% block title %}tap{% endblock %}
 
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.19/css/dataTables.bootstrap4.min.css">
-  </head>
-  <body>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-      <a class="navbar-brand" href="{% url 'home' %}">tap (alpha)</a>
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-
-      <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav mr-auto">
-        </ul>
-      </div>
-    </nav>
-    <div class="container-fluid">
-      <div class="row">
-        <div class="offset-1 col-10 my-4">
-          <div class="alert alert-info alert-dismissible fade show" role="alert">
-            Test
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-        </div>
-      </div>
-      <div class="row">
-        <div class="offset-1 col-10 my-4">
-          <table id="table" class="table table-striped table-bordered" style="width:100%">
-            <thead>
-              <tr>
-                <th>Filename</th>
-                <th>Path</th>
-              </tr>
-            </thead>
-            <tbody>
-            </tbody>
-          </table>
-        </div>
+{% block content %}
+<div class="row">
+  <div class="offset-1 col-10">
+    <ul class="nav nav-pills nav-fill border rounded">
+      <li class="nav-item">
+        <a class="nav-link active" data-toggle="tab" href="#subjects">Subjects</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" data-toggle="tab" href="#files">All Files</a>
+      </li>
+    </ul>
+  </div>
+</div>
+<div class=tab-content>
+  <div class="tab-pane active" id="subjects" role="tabpanel">
+    <div class="row">
+      <div class="offset-1 col-10 my-4">
+        {% with col1='Subject' table_id='subtable' %}
+        {% include 'reservoir/table.html' %}
+        {% endwith %}
       </div>
     </div>
-    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-    <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js" charset="utf-8"></script>
-    <script src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js" charset="utf-8"></script>
-    <script type="text/javascript">
-      $(document).ready(function() {
-        $('#table').DataTable({
-          'processing': true,
-          'serverSide': true,
-          'ajax': '{% url 'api' %}',
-          'columnDefs': [
-            {
-              'render': function(data,type,row) {
-                return "<button type=button class='btn btn-primary' onclick=copyPath('" + data + "')>Copy Path</button>";
-              },
-              'targets': 1
-            }
-          ]
-        });
-      });
-      function copyPath(path) {
-        const el = document.createElement('textarea');
-        el.value = path;
-        el.setAttribute('readonly', '');
-        el.style.position = 'absolute';
-        el.style.left = '-9999px';
-        document.body.appendChild(el);
-        el.select();
-        document.execCommand('copy');
-        document.body.removeChild(el);
+  </div>
+  <div class="tab-pane" id="files" role="tabpanel">
+    {% include 'reservoir/table_buttons.html' %}
+    <div class="row">
+      <div class="offset-1 col-10 mt-2 mb-4">
+        {% with col1='Filename' col2='Path' table_id='filetable' %}
+        {% include 'reservoir/table.html' %}
+        {% endwith %}
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script type="text/javascript">
+// initialize file table
+$(document).ready(function() {
+  {% include 'reservoir/filetable.js.html' %}
+
+  // initialize subject table
+  $('#subtable').DataTable({
+    'processing': true,
+    'serverSide': true,
+    'lengthMenu': [
+      [10, 25, 50, -1],
+      [10, 25, 50, "All"]
+    ],
+    'ajax': {
+        'url': '{% url 'table' %}',
+        'data': (d)=>{
+          d.tabletype = 'subjects';
+        },
+        'type': 'POST'
+    },
+    'columnDefs': [
+      {
+        'render': function(data,type,row) {
+          return "<a href='subject/" + data + "' target='_blank'>" + data + "</a>";
+        },
+        'targets': 0
       }
-    </script>
-  </body>
-</html>
+    ]
+  });
+
+});
+</script>
+{% endblock %}

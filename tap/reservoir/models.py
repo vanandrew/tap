@@ -6,10 +6,7 @@ from bids.layout import config
 
 # Define base BIDS data model used by session, but also subject if no session is defined
 class BaseBIDSDataClass(models.Model):
-    path = models.TextField(
-        "Path"
-    )
-
+    # might not need this anymore
     class Meta:
         abstract = True
 
@@ -33,9 +30,8 @@ class Session(BaseBIDSDataClass):
         primary_key=True
     )
 
-    subject = models.ForeignKey(
-        "Subject",
-        on_delete=models.CASCADE,
+    subjects = models.ManyToManyField(
+        Subject,
         related_name='sessions'
     )
 

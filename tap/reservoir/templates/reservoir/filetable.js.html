@@ -1,0 +1,27 @@
+filetable = $('#filetable').DataTable({
+  'processing': true,
+  'serverSide': true,
+  'lengthMenu': [
+    [10, 25, 50, -1],
+    [10, 25, 50, "All"]
+  ],
+  'ajax': {
+      'url': '{% url 'table' %}',
+      'data': (d)=>{
+        d.tabletype = 'files';
+      },
+      'type': 'POST'
+  },
+  'columnDefs': [
+    {
+      'render': function(data,type,row) {
+        return "<button type=button class='btn btn-primary' data-path='" + data + "' onclick=copyPath('" + data + "')>Copy Path</button>";
+      },
+      'targets': 1,
+      'orderable': false
+    }
+  ],
+  'select': true,
+});
+new $.fn.dataTable.Buttons(filetable, {'buttons': ['selectAll','selectNone']});
+filetable.buttons().container().appendTo('#buttons');

@@ -45,7 +45,14 @@ for sub in subjects:
         try:
             ses_obj = sub_obj.sessions.get(session=metadata['session'])
         except Session.DoesNotExist:
-            ses_obj = Session(session=metadata['session'],subject=sub_obj)
+            ses_obj = Session(session=metadata['session'])
+            ses_obj.save()
+
+        # check if subject in session, add if not there
+        try:
+            ses_obj.subjects.get(subject=sub)
+        except Subject.DoesNotExist:
+            ses_obj.subjects.add(sub_obj)
             ses_obj.save()
 
         # delete subject and session from metadata dict

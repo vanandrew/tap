@@ -1,0 +1,41 @@
+{% extends 'reservoir/base.html' %}
+{% load static %}
+
+{% block title %}tap - {{ subject }}{% endblock %}
+
+{% block content %}
+<div class="row">
+  <div class="offset-1 col-10 my-1">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item">Subject</li>
+        <li class="breadcrumb-item active">{{ subject }}</li>
+      </ol>
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item">Sessions</li>
+        <li class="breadcrumb-item active">{{ num_sessions }}</li>
+      </ol>
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item">Files</li>
+        <li class="breadcrumb-item active">{{ num_files }}</li>
+      </ol>
+  </div>
+</div>
+{% include 'reservoir/table_buttons.html' %}
+<div class="row">
+  <div class="offset-1 col-10 mt-2 mb-4">
+    {% with col1='Filename' col2='Path' table_id='filetable' %}
+    {% include 'reservoir/table.html' %}
+    {% endwith %}
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script type="text/javascript">
+// initialize file table
+$(document).ready(function() {
+  {% include 'reservoir/filetable.js.html' %}
+  $('#filetable_filter').css('display','none');
+});
+</script>
+{% endblock %}

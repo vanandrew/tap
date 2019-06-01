@@ -16,11 +16,13 @@ Including another URLconf
 from django.urls import path, re_path
 from . import views
 from django.conf import settings
+from django.conf.urls.static import static
 from django.views.static import serve
 
 urlpatterns = [
     path('', views.home, name='home'),
-    path('api', views.api, name='api'),
+    path('table', views.table, name='table'),
+    path('subject/<sub>', views.subject, name='subject'),
     path('test', views.test, name='test'),
 ]
 if settings.DEBUG:
@@ -29,3 +31,4 @@ if settings.DEBUG:
                         'show_indexes': True
                     })
                    ]
+    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
