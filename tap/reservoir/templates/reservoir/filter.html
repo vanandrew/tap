@@ -11,15 +11,13 @@
               <div class="form-group">
                 <label for="fieldselector">Field Select</label>
                 <select class="form-control" id="fieldselector">
-                  <option>---</option>
+                  {% for field in fields %}
+                  <option>{{ field }}</option>
+                  {% endfor %}
                 </select>
               </div>
             </form>
-            <h4>
-              <span class="badge badge-secondary">Var1</span>
-              <span class="badge badge-secondary">Var1</span>
-              <span class="badge badge-secondary">Var1</span>
-              <span class="badge badge-secondary">Var1</span>
+            <h4 id='fieldchoices'>
             </h4>
           </div>
         </div>
