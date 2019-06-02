@@ -23,11 +23,18 @@ urlpatterns = [
     path('', views.home, name='home'),
     path('table', views.table, name='table'),
     path('subject/<sub>', views.subject, name='subject'),
-    path('test', views.test, name='test'),
+    path('summary/<sub>/<ses>', views.exec_summary, name='exec_summary'),
+
+    # API
+    path('api/v1/fields', views.api_fields, name='api_fields'),
+    path('api/v1/unique/<field>', views.api_unique, name='api_unique'),
+    path('api/v1/query', views.api_query, name='api_query'),
+    path('api/v1/query/<sub>', views.api_query, name='api_query'),
+    path('api/v1/query/<sub>/<ses>', views.api_query, name='api_query')
 ]
 if settings.DEBUG:
     urlpatterns += [ re_path(r'^abcd/(?P<path>.*)$', serve, {
-                        'document_root': '/mnt/Daenerys/ABCD/data',
+                        'document_root': settings.ABCD_FILES,
                         'show_indexes': True
                     })
                    ]

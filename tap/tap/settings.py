@@ -118,3 +118,5 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
 STATIC_URL = '/static/'
+#ABCD_FILES = '/mnt/Daenerys/ABCD/data/abcdbids_output'
+ABCD_FILES = '/home/vanandrew/ABCDtest_output'

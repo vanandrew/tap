@@ -1,8 +1,9 @@
 import os
-from django.shortcuts import render
+from django.shortcuts import render,redirect
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from .models import *
+from . import api
 
 # Home Page
 def home(request):
@@ -59,18 +60,43 @@ def subject(request,sub):
     # get subject
     s = Subject.objects.get(subject=sub)
 
+    # get list of all sessions
+    ses = s.sessions.all()
+
     # get total number of sessions
-    num_sessions = s.sessions.count()
+    num_sessions = ses.count()
 
     # get total number of Files
     num_files = s.bidsfiles.count()
 
     return render(request, 'reservoir/subject.html', {
         'subject': sub,
+        'sessions': ses,
         'num_sessions': num_sessions,
         'num_files': num_files
     })
 
 # Executive Summary
-def test(request):
-    return render(request, 'sub-NDARINV0A4P0LWM/ses-baselineYear1Arm1/files/executivesummary/executive_summary_sub-NDARINV0A4P0LWM.html')
+def exec_summary(request,sub,ses):
+    return redirect('/abcd/sub-{0}/ses-{1}/files/executivesummary/executive_summary_sub-{0}.html'.format(
+        sub,ses
+    ),permanent=True)
+
+"""
+    API Views
+"""
+
+# List Availiable Fields
+def api_fields(request):
+    fields = api.fields()
+    return JsonResponse({'fields': fields})
+
+# Get unique values for field
+def api_unique(request,field):
+    uni = api.unique_field(field)
+    return JsonResponse({field: uni})
+
+# Query file list
+def api_query(request,sub=None,ses=None):
+    files = api.query(request,sub,ses)
+    return JsonResponse({'files': files})
