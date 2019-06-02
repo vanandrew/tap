@@ -5,12 +5,14 @@
 
 {% block content %}
 <div class="row">
-  <div class="offset-1 col-10 my-1">
+  <div class="offset-1 col-10">
     <div class="jumbotron">
       <h1 class="display-4">{{ subject }}</h1>
       <p class="lead">Sessions: {{ num_sessions }}</p>
       <p class="lead">Files: {{ num_files }}</p>
     </div>
+  </div>
+  <div class="offset-1 col-10">
     {% for session in sessions %}
     <ol class="breadcrumb">
       <li class="breadcrumb-item">Executive Summary</li>
@@ -19,10 +21,7 @@
     {% endfor %}
   </div>
 </div>
-<div class="row">
-  <div class="offset-1 col-10 my-1">
-  </div>
-</div>
+{% include 'reservoir/filter.html' %}
 {% include 'reservoir/table_buttons.html' %}
 <div class="row">
   <div class="offset-1 col-10 mt-2 mb-4">

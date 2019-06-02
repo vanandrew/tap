@@ -14,7 +14,7 @@ Simply install the packages in `requirements.txt`.
 pip install -r requirements.txt
 ```
 ####
-Run the test server by running `manage.py` under the `tap folder`.
+Run the test server by running `manage.py` under the `tap` folder.
 
 ```
 ./manage.py runserver

@@ -54,7 +54,7 @@ ROOT_URLCONF = 'tap.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': ['/mnt/Daenerys/ABCD/data/abcdbids_output/',],
+        'DIRS': [],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
