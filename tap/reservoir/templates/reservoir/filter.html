@@ -1,27 +1,13 @@
-<div class="row">
-  <div class="offset-1 col-10 mt-4 mb-1">
-    <div class="accordian">
-      <div class="card">
-        <div class="card-header">
-          <button class="btn btn-link" data-toggle="collapse" data-target="#filtercard">Filters</button>
-        </div>
-        <div class="collapse" id="filtercard">
-          <div class="card-body">
-            <form>
-              <div class="form-group">
-                <label for="fieldselector">Field Select</label>
-                <select class="form-control" id="fieldselector">
-                  {% for field in fields %}
-                  <option>{{ field }}</option>
-                  {% endfor %}
-                </select>
-              </div>
-            </form>
-            <h4 id='fieldchoices'>
-            </h4>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
+{% load static %}
+<div class="row" id="filter">
 </div>
+<script src="{% static 'reservoir/js/filter.js' %}"></script>
+<script>
+ReactDOM.render(
+  React.createElement(Filter, {
+    "api_fields": "{% url 'api_fields' %}",
+    "api_unique": "{% url 'api_unique' %}"
+  }),
+  document.getElementById('filter')
+);
+</script>

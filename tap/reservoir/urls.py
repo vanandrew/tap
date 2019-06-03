@@ -27,6 +27,7 @@ urlpatterns = [
 
     # API
     path('api/v1/fields', views.api_fields, name='api_fields'),
+    path('api/v1/unique', views.api_unique, name='api_unique'),
     path('api/v1/unique/<field>', views.api_unique, name='api_unique'),
     path('api/v1/query', views.api_query, name='api_query'),
     path('api/v1/query/<sub>', views.api_query, name='api_query'),

@@ -96,9 +96,12 @@ def api_fields(request):
     return JsonResponse({'fields': api.fields()})
 
 # Get unique values for field
-def api_unique(request,field):
-    return JsonResponse({field: api.unique_field(field)})
-
+def api_unique(request,field=None):
+    if field:
+        return JsonResponse({field: api.unique_field(field)})
+    else:
+        return JsonResponse({})
+        
 # Query file list
 def api_query(request,sub=None,ses=None):
     files = api.query(request.GET.dict(),sub,ses)
