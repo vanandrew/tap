@@ -9,7 +9,9 @@ class Options extends React.Component{
   render() {
     return (
       <h4>
-        Options to go here...
+        {this.props.value.map((o)=>(
+          <span className="badge badge-secondary mx-1" key={o}>{o}</span>
+        ))}
       </h4>
     );
   }
@@ -33,29 +35,31 @@ class Filter extends React.Component{
     this.getOptions = this.getOptions.bind(this);
   }
 
+  // Execute on creation of component
   componentDidMount() {
     // grab the available fields
     $.get(this.props.api_fields, (data) => {
       this.setState({
         fields: data.fields,
-        isLoaded: true,
-        selection: data.fields[0]
-      });
+        selection: 'datatype'
+      }, () => this.getOptions( () => this.setState({isLoaded: true}) ) );
     });
   }
 
   // load the uniques
-  getOptions() {
+  getOptions(callback) {
+    console.log(this.state.selection)
     $.get(`${this.props.api_unique}/${this.state.selection}`, (data) => {
-      this.setState({options: data[this.state.selection]});
+      this.setState({options: data[this.state.selection]}, callback);
     });
   }
 
   // handle field selection
   handleChange(event) {
-    this.setState({selection: event.target.value});
+    this.setState({selection: event.target.value}, () => this.getOptions() );
   }
 
+  // render component
   render() {
     if (this.state.isLoaded) {
       return (
@@ -77,7 +81,7 @@ class Filter extends React.Component{
                       </select>
                     </div>
                   </form>
-                  <Options />
+                  <Options value={this.state.options} />
                 </div>
               </div>
             </div>

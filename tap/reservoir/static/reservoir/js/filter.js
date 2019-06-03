@@ -25,7 +25,13 @@ var Options = function (_React$Component) {
       return React.createElement(
         "h4",
         null,
-        "Options to go here..."
+        this.props.value.map(function (o) {
+          return React.createElement(
+            "span",
+            { className: "badge badge-secondary mx-1", key: o },
+            o
+          );
+        })
       );
     }
   }]);
@@ -57,6 +63,9 @@ var Filter = function (_React$Component2) {
     return _this2;
   }
 
+  // Execute on creation of component
+
+
   _createClass(Filter, [{
     key: "componentDidMount",
     value: function componentDidMount() {
@@ -66,8 +75,11 @@ var Filter = function (_React$Component2) {
       $.get(this.props.api_fields, function (data) {
         _this3.setState({
           fields: data.fields,
-          isLoaded: true,
-          selection: data.fields[0]
+          selection: 'datatype'
+        }, function () {
+          return _this3.getOptions(function () {
+            return _this3.setState({ isLoaded: true });
+          });
         });
       });
     }
@@ -76,11 +88,12 @@ var Filter = function (_React$Component2) {
 
   }, {
     key: "getOptions",
-    value: function getOptions() {
+    value: function getOptions(callback) {
       var _this4 = this;
 
+      console.log(this.state.selection);
       $.get(this.props.api_unique + "/" + this.state.selection, function (data) {
-        _this4.setState({ options: data[_this4.state.selection] });
+        _this4.setState({ options: data[_this4.state.selection] }, callback);
       });
     }
 
@@ -89,8 +102,15 @@ var Filter = function (_React$Component2) {
   }, {
     key: "handleChange",
     value: function handleChange(event) {
-      this.setState({ selection: event.target.value });
+      var _this5 = this;
+
+      this.setState({ selection: event.target.value }, function () {
+        return _this5.getOptions();
+      });
     }
+
+    // render component
+
   }, {
     key: "render",
     value: function render() {
@@ -143,7 +163,7 @@ var Filter = function (_React$Component2) {
                       )
                     )
                   ),
-                  React.createElement(Options, null)
+                  React.createElement(Options, { value: this.state.options })
                 )
               )
             )
