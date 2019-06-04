@@ -18,14 +18,14 @@
 </div>
 <div class=tab-content>
   <div class="tab-pane active" id="subjects" role="tabpanel">
-      {% with col1='Subject' col2='null' table_comp='st' table_id='subtable' %}
+      {% with col1='Subject' col2='null' tabletype='subjects' table_comp='st' table_id='subtable' %}
       {% include 'reservoir/table.html' %}
       {% endwith %}
   </div>
   <div class="tab-pane" id="files" role="tabpanel">
     {% include 'reservoir/filter.html' %}
     {% include 'reservoir/table_buttons.html' %}
-    {% with col1='Filename' col2='Path' table_comp='ft' table_id='filetable' %}
+    {% with col1='Filename' col2='Path' tabletype='files' table_comp='ft' table_id='filetable' %}
     {% include 'reservoir/table.html' %}
     {% endwith %}
   </div>
@@ -34,35 +34,4 @@
 {% endblock %}
 
 {% block scripts %}
-<script type="text/javascript">
-// initialize file table
-$(document).ready(function() {
-
-  // // initialize subject table
-  // $('#subtable').DataTable({
-  //   'processing': true,
-  //   'serverSide': true,
-  //   'lengthMenu': [
-  //     [10, 25, 50, -1],
-  //     [10, 25, 50, "All"]
-  //   ],
-  //   'ajax': {
-  //       'url': '{% url 'table' %}',
-  //       'data': (d)=>{
-  //         d.tabletype = 'subjects';
-  //       },
-  //       'type': 'POST'
-  //   },
-  //   'columnDefs': [
-  //     {
-  //       'render': function(data,type,row) {
-  //         return "<a href='subject/" + data + "' target='_blank'>" + data + "</a>";
-  //       },
-  //       'targets': 0
-  //     }
-  //   ]
-  // });
-
-});
-</script>
 {% endblock %}

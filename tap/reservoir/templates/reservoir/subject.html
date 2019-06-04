@@ -23,20 +23,15 @@
 </div>
 {% include 'reservoir/filter.html' %}
 {% include 'reservoir/table_buttons.html' %}
-<div class="row">
-  <div class="offset-1 col-10 mt-2 mb-4">
-    {% with col1='Filename' col2='Path' table_id='filetable' %}
-    {% include 'reservoir/table.html' %}
-    {% endwith %}
-  </div>
-</div>
+{% with col1='Filename' col2='Path' tabletype='files' table_comp='ft' table_id='filetable' subject=subject %}
+{% include 'reservoir/table.html' %}
+{% endwith %}
 {% endblock %}
 
 {% block scripts %}
 <script type="text/javascript">
-// initialize file table
+// delete search box
 $(document).ready(function() {
-  {% include 'reservoir/filetable.js.html' %}
   $('#filetable_filter').css('display','none');
 });
 </script>

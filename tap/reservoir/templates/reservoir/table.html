@@ -7,10 +7,12 @@
 <script>
 ReactDOM.render(
   React.createElement(Table, {
+    tabletype: "{{ tabletype }}",
     table_url: "{% url 'table' %}",
     table_id: "{{ table_id }}",
     col1: "{{ col1 }}",
-    col2: "{{ col2 }}"
+    col2: "{{ col2 }}",
+    subject: !("{{ subject }}" == "") && "{{ subject }}"
   }),
   document.getElementById("{{ table_comp }}")
 );

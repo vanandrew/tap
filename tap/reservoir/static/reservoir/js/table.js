@@ -25,37 +25,52 @@ var Table = function (_React$Component) {
     return _this;
   }
 
+  //TODO This is bad code... Refactor
   // Execute on creation of component
 
 
   _createClass(Table, [{
     key: 'componentDidMount',
     value: function componentDidMount() {
-      var _this2 = this;
-
+      // pass down props
+      var props = this.props;
       this.setState({ isLoaded: true }, function () {
-        var filetable = $('#' + _this2.props.table_id).DataTable({
+        var table = $('#' + props.table_id).DataTable({
           'processing': true,
           'serverSide': true,
           'lengthMenu': [[10, 25, 50, -1], [10, 25, 50, "All"]],
           'ajax': {
-            'url': _this2.props.table_url,
+            'url': props.table_url,
             'data': function data(d) {
-              d.tabletype = 'files';
+              if (props.tabletype == 'files') {
+                d.tabletype = 'files';
+                if (props.subject) {
+                  d.search.value = props.subject;
+                }
+              } else {
+                d.tabletype = 'subjects';
+              }
+              return d;
             },
             'type': 'POST'
           },
           'columnDefs': [{
             'render': function render(data, type, row) {
-              return "<button type=button class='btn btn-primary' data-path='" + data + "' onclick=copyPath('" + data + "')>Copy Path</button>";
+              if (props.tabletype == 'files') {
+                return "<button type=button class='btn btn-primary' data-path='" + data + "' onclick=copyPath('" + data + "')>Copy Path</button>";
+              } else {
+                return "<a href='subject/" + data + "' target='_blank'>" + data + "</a>";
+              }
             },
-            'targets': 1,
-            'orderable': false
+            'targets': +(props.tabletype == 'files'),
+            'orderable': props.tabletype != 'files'
           }],
-          'select': true
+          'select': props.tabletype == 'files'
         });
-        new $.fn.dataTable.Buttons(filetable, { 'buttons': ['selectAll', 'selectNone'] });
-        filetable.buttons().container().appendTo('#buttons');
+        if (props.tabletype == 'files') {
+          new $.fn.dataTable.Buttons(table, { 'buttons': ['selectAll', 'selectNone'] });
+          table.buttons().container().appendTo('#buttons');
+        }
       });
     }
 
