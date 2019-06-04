@@ -1,10 +1,17 @@
-<table id="{{ table_id }}" class="table table-striped table-bordered" style="width:100%">
-  <thead>
-    <tr>
-      {% if col1 %}<th>{{ col1 }}</th>{% endif %}
-      {% if col2 %}<th>{{ col2 }}</th>{% endif %}
-    </tr>
-  </thead>
-  <tbody>
-  </tbody>
-</table>
+{% load static %}
+<div class="row">
+  <div class="offset-1 col-10 mt-2 mb-4" id="{{ table_comp }}">
+  </div>
+</div>
+
+<script>
+ReactDOM.render(
+  React.createElement(Table, {
+    table_url: "{% url 'table' %}",
+    table_id: "{{ table_id }}",
+    col1: "{{ col1 }}",
+    col2: "{{ col2 }}"
+  }),
+  document.getElementById("{{ table_comp }}")
+);
+</script>
