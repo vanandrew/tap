@@ -43,23 +43,23 @@ class Session(BaseBIDSDataClass):
 
 def createmetafield(metafields,key):
     # detect field type
-    metatype = type(metafields[key])
+    metatype = metafields[key]
 
     # create int field
-    if metatype == int:
+    if metatype == 'int':
         return models.IntegerField(
             key,
             blank=True,
             null=True
         )
-    elif metatype == float:
+    elif metatype == 'float':
         return models.FloatField(
             key,
             blank=True,
             null=True
         )
     # create character field
-    elif metatype == str or metatype == list:
+    elif metatype == 'str' or metatype == 'list':
         return models.CharField(
             key,
             max_length=255,
@@ -113,8 +113,9 @@ class BIDSFile(models.Model):
 
     # load template files
     metafields = dict()
-    for f in os.listdir('reservoir/BIDSMetaTemplates/'):
-        with open(os.path.join(settings.BASE_DIR,'reservoir/BIDSMetaTemplates/',f),'r') as metafile:
+    path_to_templates = 'reservoir/BIDSInputModelFields/'
+    for f in os.listdir(path_to_templates):
+        with open(os.path.join(settings.BASE_DIR,path_to_templates,f),'r') as metafile:
             metafields.update(json.load(metafile))
 
     # create fields

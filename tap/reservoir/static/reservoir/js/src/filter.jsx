@@ -90,7 +90,7 @@ class Options extends React.Component{
             <p>
               {this.props.filters.include.map((i)=>(
                 <span className="badge badge-success mx-1"
-                  key={`include_${i[getObjectKey(i)]}`}>{i[getObjectKey(i)]}</span>
+                  key={`include_${i[getObjectKey(i)]}`}>{getObjectKey(i)} | {i[getObjectKey(i)]}</span>
               ))}
             </p>
           </div>
@@ -99,7 +99,7 @@ class Options extends React.Component{
             <p>
               {this.props.filters.exclude.map((e)=>(
                 <span className="badge badge-danger mx-1"
-                  key={`exclude_${e[getObjectKey(e)]}`}>{e[getObjectKey(e)]}</span>
+                  key={`exclude_${e[getObjectKey(e)]}`}>{getObjectKey(e)} | {e[getObjectKey(e)]}</span>
               ))}
             </p>
           </div>

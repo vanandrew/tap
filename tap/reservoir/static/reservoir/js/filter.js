@@ -144,6 +144,8 @@ var Options = function (_React$Component) {
                   "span",
                   { className: "badge badge-success mx-1",
                     key: "include_" + i[getObjectKey(i)] },
+                  getObjectKey(i),
+                  " | ",
                   i[getObjectKey(i)]
                 );
               })
@@ -165,6 +167,8 @@ var Options = function (_React$Component) {
                   "span",
                   { className: "badge badge-danger mx-1",
                     key: "exclude_" + e[getObjectKey(e)] },
+                  getObjectKey(e),
+                  " | ",
                   e[getObjectKey(e)]
                 );
               })

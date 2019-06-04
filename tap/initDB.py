@@ -10,8 +10,8 @@ from reservoir.models import *
 from bids import BIDSLayout
 
 # set the input ABCD data path
-#input_data = '/mnt/Daenerys/ABCD/data/abcdbids_input'
-input_data = '/home/vanandrew/ABCDtest'
+input_data = '/mnt/Daenerys/ABCD/data/abcdbids_input'
+#input_data = '/home/vanandrew/ABCDtest'
 
 # load all data
 print('Loading BIDS Dataset... (This may take a while)')
