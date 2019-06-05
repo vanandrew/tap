@@ -18,44 +18,46 @@ def table(request):
     start = int(request.POST['start'])
     end = start + int(request.POST['length'])
 
-    # adjust response for table type
-    if request.POST['tabletype'] == 'files':
-        # get size of all records
-        recordsTotal = BIDSFile.objects.count()
+    # get filters and fields
+    include = [{key.replace('[',']').split(']')[-2]: request.POST[key]} for key in request.POST if 'include' in key]
+    exclude = [{key.replace('[',']').split(']')[-2]: request.POST[key]} for key in request.POST if 'exclude' in key]
+    fields = [field.lower() for field in request.POST.getlist('fields[]')]
 
-        # filter filenames via search bar; sort filenames
-        search_value = request.POST['search[value]']
-        dir = {'asc': 'filename', 'desc': '-filename'}[request.POST['order[0][dir]']]
-        recordsFiltered = BIDSFile.objects.filter(filename__contains=search_value).order_by(dir)
+    # return subject data if in fields
+    if 'subject' in fields:
+        Object = Subject
+        sorter = 'subject'
 
-        # TODO: OBVIOUSLY BAD CODE! REFACTOR
-        # format final list
-        if end == -1:
-            data = [[f.filename, f.path] for f in recordsFiltered]
-        else:
-            data = [[f.filename, f.path] for f in recordsFiltered[start:end]]
-    elif request.POST['tabletype'] == 'subjects':
-        # get size of all records
-        recordsTotal = Subject.objects.count()
+    else: # else return file data
+        Object = BIDSFile
+        sorter = 'filename'
 
-        # filter subjects via search bar; sort subjects
-        search_value = request.POST['search[value]']
-        dir = {'asc': 'subject', 'desc': '-subject'}[request.POST['order[0][dir]']]
-        recordsFiltered = Subject.objects.filter(subject__contains=search_value).order_by(dir)
+    # get size of all records
+    recordsTotal = Object.objects.count()
 
-        # TODO: OBVIOUSLY BAD CODE! REFACTOR
-        # format final list
-        if end == -1:
-            data = [[f.subject,] for f in recordsFiltered]
-        else:
-            data = [[f.subject,] for f in recordsFiltered[start:end]]
+    # filter by includes/exxcudes
+    recordsFiltered = Object.objects.all()
+    for i in include:
+        for key in i:
+            recordsFiltered = recordsFiltered.filter(**{'{}__contains'.format(key): i[key]})
+    for e in exclude:
+        for key in e:
+            recordsFiltered = recordsFiltered.exclude(**{'{}__contains'.format(key): e[key]})
+
+    # filter via search bar; sort
+    search_value = request.POST['search[value]']
+    dir = {'asc': sorter, 'desc': '-{}'.format(sorter)}[request.POST['order[0][dir]']]
+    recordsFiltered = recordsFiltered.filter(**{'{}__contains'.format(sorter): search_value}).order_by(dir)
+
+    # format data
+    data = [[getattr(r,f) for f in fields] for r in recordsFiltered]
 
     # create response and return
     response = {
         "draw": int(request.POST['draw']),
         "recordsTotal": recordsTotal,
         "recordsFiltered": len(recordsFiltered),
-        "data": data
+        "data": data[start:end]
     }
     return JsonResponse(response)
 
@@ -101,7 +103,7 @@ def api_unique(request,field=None):
         return JsonResponse({field: api.unique_field(field)})
     else:
         return JsonResponse({})
-        
+
 # Query file list
 def api_query(request,sub=None,ses=None):
     files = api.query(request.GET.dict(),sub,ses)

@@ -12,7 +12,7 @@ def unique_field(field):
     return [f[field] for f in uf if f[field] != None]
 
 # return query
-def query(filter_dict,sub,ses):
+def query(filter_dict,sub=None,ses=None):
     # construct query
     query_dict = dict()
     if sub:
