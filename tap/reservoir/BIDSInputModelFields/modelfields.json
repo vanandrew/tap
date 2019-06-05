@@ -66,5 +66,9 @@
  "TriggerDelayTime": "int",
  "TxRefAmp": "float",
  "VendorReportedEchoSpacing": "float",
- "WipMemBlock": "str"
+ "WipMemBlock": "str",
+ "PhilipsRescaleSlope": "float",
+ "PhilipsRescaleIntercept": "float",
+ "PhilipsScaleSlope": "float",
+ "UsePhilipsFloatNotDisplayScaling": "int"
 }
