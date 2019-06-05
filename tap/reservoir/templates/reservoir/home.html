@@ -18,18 +18,36 @@
 </div>
 <div class=tab-content>
   <div class="tab-pane active" id="subjects" role="tabpanel">
-      {% with col1='Subject' col2='null' tabletype='subjects' table_comp='st' table_id='subtable' %}
-      {% include 'reservoir/table.html' %}
-      {% endwith %}
+    <script>
+      ReactDOM.render(
+        React.createElement(Table, {
+          filter: false,
+          buttons: false,
+          select: false,
+          table_url: "{% url 'table' %}",
+          table_id: "subjecttable",
+          fields: ["Subject"]
+        }),
+        document.getElementById("subjects")
+      );
+    </script>
   </div>
   <div class="tab-pane" id="files" role="tabpanel">
-    {% include 'reservoir/filter.html' %}
-    {% include 'reservoir/table_buttons.html' %}
-    {% with col1='Filename' col2='Path' tabletype='files' table_comp='ft' table_id='filetable' %}
-    {% include 'reservoir/table.html' %}
-    {% endwith %}
+    <script>
+      ReactDOM.render(
+        React.createElement(Table, {
+          filter: true,
+          buttons: true,
+          select: true,
+          table_url: "{% url 'table' %}",
+          filter_urls: ["{% url 'api_fields' %}","{% url 'api_unique' %}"],
+          table_id: "filetable",
+          fields: ["Filename","Path"]
+        }),
+        document.getElementById("files")
+      );
+    </script>
   </div>
-</div>
 </div>
 {% endblock %}
 

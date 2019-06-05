@@ -21,11 +21,23 @@
     {% endfor %}
   </div>
 </div>
-{% include 'reservoir/filter.html' %}
-{% include 'reservoir/table_buttons.html' %}
-{% with col1='Filename' col2='Path' tabletype='files' table_comp='ft' table_id='filetable' subject=subject %}
-{% include 'reservoir/table.html' %}
-{% endwith %}
+<div id="files">
+<script>
+  ReactDOM.render(
+    React.createElement(Table, {
+      filter: true,
+      buttons: true,
+      select: true,
+      table_url: "{% url 'table' %}",
+      filter_urls: ["{% url 'api_fields' %}","{% url 'api_unique' %}"],
+      table_id: "filetable",
+      fields: ["Filename","Path"],
+      subject: "{{ subject }}"
+    }),
+    document.getElementById("files")
+  );
+</script>
+</div>
 {% endblock %}
 
 {% block scripts %}

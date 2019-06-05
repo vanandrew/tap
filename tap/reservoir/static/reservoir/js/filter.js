@@ -296,7 +296,7 @@ var Filter = function (_React$Component2) {
       if (this.state.isLoaded) {
         return React.createElement(
           "div",
-          { className: "offset-1 col-10 mt-4 mb-2" },
+          { className: "offset-1 col-10 my-2" },
           React.createElement(
             "div",
             { className: "accordian" },

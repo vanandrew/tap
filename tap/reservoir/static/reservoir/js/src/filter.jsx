@@ -192,7 +192,7 @@ class Filter extends React.Component{
   render() {
     if (this.state.isLoaded) {
       return (
-        <div className="offset-1 col-10 mt-4 mb-2">
+        <div className="offset-1 col-10 my-2">
           <div className="accordian">
             <div className="card">
               <div className="card-header">
