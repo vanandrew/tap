@@ -67,6 +67,8 @@
  "TxRefAmp": "float",
  "VendorReportedEchoSpacing": "float",
  "WipMemBlock": "str",
+ "PhilipsRWVSlope": "float",
+ "PhilipsRWVIntercept": "float",
  "PhilipsRescaleSlope": "float",
  "PhilipsRescaleIntercept": "float",
  "PhilipsScaleSlope": "float",
