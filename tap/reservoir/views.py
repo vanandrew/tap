@@ -35,21 +35,23 @@ def table(request):
     # get size of all records
     recordsTotal = Object.objects.count()
 
-    # filter by includes/exxcudes
-    recordsFiltered = Object.objects.all()
+    # filter by includes/excludes
+    include_dict = dict()
+    exclude_dict = dict()
     for i in include:
         for key in i:
-            recordsFiltered = recordsFiltered.filter(**{'{}__contains'.format(key): i[key]})
+            include_dict['{}__contains'.format(key)] = i[key]
     for e in exclude:
         for key in e:
-            recordsFiltered = recordsFiltered.exclude(**{'{}__contains'.format(key): e[key]})
+            exclude_dict['{}__contains'.format(key)] = e[key]
 
     # filter via search bar; sort
     search_value = request.POST['search[value]']
     dir = {'asc': sorter, 'desc': '-{}'.format(sorter)}[request.POST['order[0][dir]']]
-    recordsFiltered = recordsFiltered.filter(**{'{}__contains'.format(sorter): search_value}).order_by(dir)
+    recordsFiltered = Object.objects.filter(**include_dict).exclude(**exclude_dict).filter(
+        **{'{}__contains'.format(sorter): search_value}).order_by(dir).only(*fields)
 
-    # format data
+    # format data TODO: This is slow... figure out a faster formatting...
     data = [[getattr(r,f) for f in fields] for r in recordsFiltered]
 
     # create response and return
