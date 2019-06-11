@@ -197,3 +197,6 @@ typings/
 
 # DynamoDB Local files
 .dynamodb/
+
+# ignore static
+tap/static

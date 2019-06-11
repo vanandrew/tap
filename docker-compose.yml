@@ -1,0 +1,24 @@
+version: "3.7"
+services:
+  tap:
+    build:
+      context: ./
+      dockerfile: Dockerfile-tap
+    image: vanandrew/tap:0.1.0
+    command: ["sh","-c","/src/manage.py migrate && uwsgi --ini /src/uwsgi.ini"]
+    environment:
+      PROD: 1
+    ports:
+      - 8000:8000
+    depends_on:
+      - db
+  db:
+    image: postgres:11.3
+  nginx:
+    image: nginx:1.17
+    volumes:
+      - ./nginx:/etc/nginx/conf.d:ro
+      - ./tap/static:/static:ro
+      #- /mnt/Daenerys/ABCD/data/abcdbids_output:/abcd:ro
+    ports:
+      - 80:80

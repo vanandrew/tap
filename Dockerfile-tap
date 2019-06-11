@@ -1,0 +1,9 @@
+FROM python:3.7.3-slim-stretch
+MAINTAINER Andrew Van <vanandrew@wustl.edu>
+ENV PYTHONUNBUFFERED 1
+COPY requirements.txt .
+RUN apt-get update && apt-get install -y build-essential && \
+  pip install -r requirements.txt
+RUN mkdir /src
+WORKDIR /src
+COPY tap /src/
