@@ -5,7 +5,7 @@ services:
       context: ./
       dockerfile: Dockerfile-tap
     image: vanandrew/tap:0.1.0
-    command: ["sh","-c","/src/manage.py migrate && uwsgi --ini /src/uwsgi.ini"]
+    command: ["sh","-c","sleep 10 && /src/manage.py migrate && uwsgi --ini /src/uwsgi.ini"]
     environment:
       PROD: 1
     ports:
@@ -22,3 +22,5 @@ services:
       #- /mnt/Daenerys/ABCD/data/abcdbids_output:/abcd:ro
     ports:
       - 80:80
+    depends_on:
+      - tap
