@@ -13,7 +13,7 @@ class BaseBIDSDataClass(models.Model):
 class Subject(BaseBIDSDataClass):
     subject = models.CharField(
         "Subject",
-        max_length = 255,
+        max_length=65535,
         primary_key=True
     )
 
@@ -26,7 +26,7 @@ class Subject(BaseBIDSDataClass):
 class Session(BaseBIDSDataClass):
     session = models.CharField(
         "Session",
-        max_length=255,
+        max_length=65535,
         primary_key=True
     )
 
@@ -62,7 +62,7 @@ def createmetafield(metafields,key):
     elif metatype == 'str' or metatype == 'list':
         return models.CharField(
             key,
-            max_length=255,
+            max_length=65535,
             blank=True,
             null=True
         )
@@ -74,7 +74,7 @@ def createmetafield(metafields,key):
 class BIDSFile(models.Model):
     filename = models.CharField(
         "Filename",
-        max_length=255,
+        max_length=65535,
         primary_key=True
     )
 
@@ -106,7 +106,7 @@ class BIDSFile(models.Model):
         if entry['name'] != 'subject' and entry['name'] != 'session':
             vars()[entry['name'].lower()] = models.CharField(
                 entry['name'],
-                max_length=255,
+                max_length=65535,
                 blank=True,
                 null=True
             )
